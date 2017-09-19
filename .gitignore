@@ -1,0 +1,6 @@
+target
+.*
+!.dockerignore
+!.gitignore
+dependency-reduced-pom.xml
+docker.env
