@@ -3,7 +3,7 @@
 
   <modelVersion>4.0.0</modelVersion>
   <groupId>sub.fwb</groupId>
-  <artifactId>biblio-importer</artifactId>
+  <artifactId>wbquellen-importer</artifactId>
   <version>0.0.1-SNAPSHOT</version>
 
   <parent>
