@@ -1,0 +1,15 @@
+version: '2'
+services:
+  compile:
+    build:
+      context: .
+      dockerfile: Dockerfile-compile
+    volumes:
+      - .:/project
+  solr:
+    image: solr:5.4.1
+    restart: always
+    volumes:
+      - ./solr:/opt/solr/server/solr
+    ports:
+      - 8984:8983

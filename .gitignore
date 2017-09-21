@@ -4,3 +4,4 @@ target
 !.gitignore
 dependency-reduced-pom.xml
 docker.env
+data
