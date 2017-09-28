@@ -23,7 +23,7 @@ public class FwbExcelParserTest {
 	@Test
 	public void test() throws Exception {
 		FwbExcelParser excelParser = new FwbExcelParser();
-		List<Map<String, String>> results = excelParser.convertExcelToMap(new File("src/test/resources/sources.xlsx"));
+		List<Map<String, String>> results = excelParser.convertExcelToMaps(new File("src/test/resources/sources.xlsx"));
 
 		assertEquals("Biblio1", results.get(0).get("biblio"));
 		assertEquals("145520943", results.get(0).get("ppn"));

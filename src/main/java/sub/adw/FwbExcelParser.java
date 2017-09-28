@@ -30,7 +30,7 @@ public class FwbExcelParser {
 	private final int ZITIERWEISE = 19;
 	private final int NAME = 21;
 
-	public List<Map<String, String>> convertExcelToMap(File excelFile) throws IOException {
+	public List<Map<String, String>> convertExcelToMaps(File excelFile) throws IOException {
 		FileInputStream file = new FileInputStream(excelFile);
 		List<Map<String, String>> resultList = new ArrayList<>();
 		XSSFWorkbook workbook = new XSSFWorkbook(file);
