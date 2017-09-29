@@ -7,7 +7,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class CatalogResolverTest {
+public class CatalogPpnResolverTest {
 
 	@Before
 	public void setUp() throws Exception {
@@ -19,12 +19,12 @@ public class CatalogResolverTest {
 
 	@Test
 	public void test() throws Exception {
-		CatalogResolver resolver = new CatalogResolver();
+		CatalogPpnResolver resolver = new CatalogPpnResolver();
 
-		String mods = resolver.fetchByPpn("145520943", CatalogResolver.MODS_FORMAT);
+		String mods = resolver.fetchByPpn("145520943", CatalogPpnResolver.MODS_FORMAT);
 		assertThat(mods, containsString("Friedrich von Schwaben"));
 
-		String pica = resolver.fetchByPpn("145520943", CatalogResolver.PICA_FORMAT);
+		String pica = resolver.fetchByPpn("145520943", CatalogPpnResolver.PICA_FORMAT);
 		assertThat(pica, containsString("002@ $0Aau"));
 	}
 

@@ -8,10 +8,10 @@ import java.util.Map;
 public class CatalogParser {
 
 	public List<Map<String, String>> convertCatalogEntriesToMaps(List<Map<String, String>> excelEntries) throws MalformedURLException, IOException {
-		CatalogResolver resolver = new CatalogResolver();
+		CatalogPpnResolver resolver = new CatalogPpnResolver();
 		for (Map<String, String> excelEntry : excelEntries) {
 			String ppn = excelEntry.get("ppn");
-			String mods = resolver.fetchByPpn(ppn, CatalogResolver.MODS_FORMAT);
+			String mods = resolver.fetchByPpn(ppn, CatalogPpnResolver.MODS_FORMAT);
 		}
 		return null;
 	}

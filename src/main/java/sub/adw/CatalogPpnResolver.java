@@ -6,7 +6,7 @@ import java.net.URL;
 
 import org.apache.commons.io.IOUtils;
 
-public class CatalogResolver {
+public class CatalogPpnResolver {
 
 	public static final String URL_TEMPLATE = "http://unapi.gbv.de/?id=gvk:ppn:__PPN__&format=__FORMAT__";
 	public static final String MODS_FORMAT = "mods";
