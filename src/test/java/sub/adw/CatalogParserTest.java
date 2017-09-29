@@ -26,7 +26,11 @@ public class CatalogParserTest {
 	@Test
 	public void test() throws Exception {
 		CatalogParser parser = new CatalogParser();
-		parser.convertCatalogEntriesToMaps(excelEntries());
+		List<Map<String, String>> maps = parser.convertCatalogEntriesToMaps(excelEntries());
+		String title1 = maps.get(0).get("titel");
+		String title2 = maps.get(1).get("titel");
+		assertEquals("Friedrich von Schwaben", title1);
+		assertEquals("Kirchen- und religiöse Lieder aus dem zwölften bis fünfzehnten Jahrhundert", title2);
 	}
 
 	private List<Map<String, String>> excelEntries() {
