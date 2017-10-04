@@ -46,8 +46,8 @@
 
   <field name="id" type="string" required="true" />
 
-  <!-- fwb, dwb, mwb -->
-  <field name="wb" type="string" required="true" />
+  <!-- fwb, dwb, mwb, catalog -->
+  <field name="origin" type="string" required="true" />
 
   <field name="titel" type="text_de" />
   <field name="artikel" type="text_de" multiValued="false" />

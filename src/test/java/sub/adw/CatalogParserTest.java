@@ -15,6 +15,8 @@ import org.junit.Test;
 
 public class CatalogParserTest {
 
+	CatalogParser parser = new CatalogParser();
+
 	@Before
 	public void setUp() throws Exception {
 	}
@@ -24,13 +26,32 @@ public class CatalogParserTest {
 	}
 
 	@Test
-	public void test() throws Exception {
-		CatalogParser parser = new CatalogParser();
+	public void shouldParseEntryWithThreePpns() throws Exception {
+		List<Map<String, String>> maps = parser.convertCatalogEntriesToMaps(excelEntryWithThreePpns());
+		assertEquals(3, maps.size());
+		String title1 = maps.get(0).get("titel");
+		String title2 = maps.get(1).get("titel");
+		String title3 = maps.get(2).get("titel");
+		assertEquals("Gedichte Heinrichs des Teichners", title1);
+		assertEquals("Gedichte Heinrichs des Teichners", title2);
+		assertEquals("Gedichte Heinrichs des Teichners", title3);
+	}
+
+	@Test
+	public void shouldParseTwoEntries() throws Exception {
 		List<Map<String, String>> maps = parser.convertCatalogEntriesToMaps(excelEntries());
 		String title1 = maps.get(0).get("titel");
 		String title2 = maps.get(1).get("titel");
 		assertEquals("Friedrich von Schwaben", title1);
 		assertEquals("Kirchen- und religiöse Lieder aus dem zwölften bis fünfzehnten Jahrhundert", title2);
+	}
+
+	private List<Map<String, String>> excelEntryWithThreePpns() {
+		List<Map<String, String>> entries = new ArrayList<>();
+		Map<String, String> map1 = new HashMap<>();
+		map1.put("ppn", "176825541; 17682555X; 176825568");
+		entries.add(map1);
+		return entries;
 	}
 
 	private List<Map<String, String>> excelEntries() {

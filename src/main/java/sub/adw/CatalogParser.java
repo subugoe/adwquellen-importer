@@ -1,5 +1,6 @@
 package sub.adw;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
@@ -21,11 +22,29 @@ public class CatalogParser {
 		CatalogPpnResolver resolver = new CatalogPpnResolver();
 		for (Map<String, String> excelEntry : excelEntries) {
 			Map<String, String> modsMap = new HashMap<>();
-			String ppn = excelEntry.get("ppn");
-			String mods = resolver.fetchByPpn(ppn, CatalogPpnResolver.MODS_FORMAT);
-			Xpath xpath = new Xpath(mods);
-			modsMap.put("titel", xpath.getString("//titleInfo/title"));
-			allMaps.add(modsMap);
+			String[] ppnArray = excelEntry.get("ppn").split("[;\\s]+");
+			for (String ppn : ppnArray) {
+				if ("".equals(ppn)) {
+					// TODO: warning
+					continue;
+				}
+				//System.out.println(ppn);
+				try {
+					String mods = resolver.fetchByPpn(ppn, CatalogPpnResolver.MODS_FORMAT);
+					Xpath xpath = new Xpath(mods);
+					modsMap.put("titel", xpath.getString("//titleInfo/title"));
+					modsMap.put("ppn", ppn);
+					allMaps.add(modsMap);
+				} catch (FileNotFoundException e) {
+					System.out.println("Not found in catalog: " + e.getMessage());
+				} catch (IOException e) {
+					if (e.getMessage().startsWith("Server returned HTTP response code: 400")) {
+						System.out.println(e.getMessage());
+					} else {
+						throw e;
+					}
+				}
+			}
 		}
 		return allMaps;
 	}
