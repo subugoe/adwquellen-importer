@@ -19,7 +19,9 @@ public class ImporterTest {
 	//@Test
 	public void test() throws Exception {
 		Importer importer = new Importer();
-		importer.convert("/home/dennis/temp/in08/FWB-Quellenliste.xlsx", "/home/dennis/temp/testout");
+		//importer.convert("/home/dennis/temp/in08/FWB-Quellenliste.xlsx", "/home/dennis/temp/testout");
+		//importer.upload("/home/dennis/temp/testout", "http://localhost:8984/solr", "adwquellen");
+		importer.upload("/home/dennis/temp/testout", "http://abc.sub.uni-goettingen.de:8073/solr", "adwquellen");
 	}
 
 }

@@ -32,6 +32,7 @@ public class CatalogParser {
 				try {
 					String mods = resolver.fetchByPpn(ppn, CatalogPpnResolver.MODS_FORMAT);
 					Xpath xpath = new Xpath(mods);
+					modsMap.put("origin", "catalog");
 					modsMap.put("titel", xpath.getString("//titleInfo/title"));
 					modsMap.put("ppn", ppn);
 					allMaps.add(modsMap);

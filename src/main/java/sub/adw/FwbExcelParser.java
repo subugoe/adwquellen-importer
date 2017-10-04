@@ -23,6 +23,7 @@ public class FwbExcelParser {
 
 	private final int SIGLE = 1;
 	private final int KRAFTLISTE = 2;
+	private final int KURZTITEL_KLARSCHRIFT = 5;
 	private final int DIGITALISAT_ONLINE = 14;
 	private final int PERMALINK = 16;
 	private final int BIBLIO = 17;
@@ -40,9 +41,13 @@ public class FwbExcelParser {
 		for (int i = 1; i <= sheet.getLastRowNum(); i++) {
 			Map<String, String> resultMap = new HashMap<>();
 
+			resultMap.put("origin", "fwb");
+
 			Row row = sheet.getRow(i);
 			String biblio = asString(row.getCell(BIBLIO));
 			resultMap.put("biblio", biblio);
+			String title = asString(row.getCell(KURZTITEL_KLARSCHRIFT));
+			resultMap.put("titel", title);
 
 			String ppn = asString(row.getCell(PPN));
 			resultMap.put("ppn", ppn);
