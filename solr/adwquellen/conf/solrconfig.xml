@@ -32,8 +32,8 @@
       <str name="tie">0.01</str>
       <str name="echoParams">all</str>
       <str name="defType">edismax</str>
-      <str name="df">artikel</str>
-      <str name="hl.fl">artikel,bdv</str>
+      <str name="df">titel</str>
+      <str name="hl.fl">titel</str>
       <str name="hl.simple.pre"><![CDATA[<span class="highlight">]]></str>
       <str name="hl.simple.post"><![CDATA[</span>]]></str>
     </lst>
