@@ -50,6 +50,8 @@
   <field name="origin" type="string" required="true" />
 
   <field name="titel" type="text_de" />
+  <field name="ppn" type="text_de" multiValued="false "/>
+  <field name="biblio" type="text_de" multiValued="false "/>
   <field name="artikel" type="text_de" multiValued="false" />
 
   <!-- transaction log -->
