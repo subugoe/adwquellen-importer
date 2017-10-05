@@ -61,7 +61,7 @@ public class Importer {
 	}
 
 	private void printCurrentStatus(int currentNumber, int lastNumber) {
-		if (currentNumber % 10000 == 0 || currentNumber == lastNumber) {
+		if (currentNumber % 1000 == 0 || currentNumber == lastNumber) {
 			out.println("    ... " + currentNumber);
 		}
 	}
