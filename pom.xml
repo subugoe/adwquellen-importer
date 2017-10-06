@@ -80,6 +80,16 @@
       <artifactId>solr-core</artifactId>
       <version>5.4.1</version>
     </dependency>
+    <dependency>
+      <groupId>org.eclipse.jgit</groupId>
+      <artifactId>org.eclipse.jgit</artifactId>
+      <version>4.4.1.201607150455-r</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-email</artifactId>
+      <version>1.4</version>
+    </dependency>
 
   </dependencies>
 

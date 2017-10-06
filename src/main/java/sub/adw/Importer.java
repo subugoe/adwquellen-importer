@@ -18,6 +18,10 @@ public class Importer {
 	private MapToXmlConverter mapConverter = new MapToXmlConverter();
 	private Uploader uploader = new Uploader();
 
+	public void setLogOutput(PrintStream newOut) {
+		out = newOut;
+	}
+
 	public void convert(String inputExcel, String solrXmlDir) throws Exception {
 		File outputDir = new File(solrXmlDir);
 		fileAccess.cleanDir(outputDir);
