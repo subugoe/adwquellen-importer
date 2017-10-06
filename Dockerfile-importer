@@ -1,0 +1,7 @@
+FROM java:8
+
+#RUN apt-get update && apt-get install -y \
+#	git
+
+COPY target/adwquellen-importer.jar /tmp/adwquellen-importer.jar
+CMD java -jar /tmp/adwquellen-importer.jar

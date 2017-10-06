@@ -13,3 +13,21 @@ services:
       - ./solr:/opt/solr/server/solr
     ports:
       - 8984:8983
+  importer:
+    build:
+      context: .
+      dockerfile: Dockerfile-importer
+    restart: always
+    ports:
+      - 9090:8080
+    volumes:
+      - ./gitclone/git:/git
+      - ./import-files:/import-files
+    environment:
+      - GIT_DIR=/git/adwquellen-daten
+      - OUTPUT_DIR=/import-files
+      - SOLR_IMPORT_CORE=adwquellen
+      - SOLR_ONLINE_CORE=
+    env_file:
+      - docker.env
+    
