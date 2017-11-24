@@ -10,7 +10,7 @@ services:
     image: solr:5.4.1
     restart: always
     volumes:
-      - ./solr:/opt/solr/server/solr
+      - ./adwquellen-plugin/solr:/opt/solr/server/solr
     ports:
       - 8984:8983
   importer:

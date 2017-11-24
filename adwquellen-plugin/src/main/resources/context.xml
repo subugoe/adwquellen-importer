@@ -4,12 +4,14 @@
 
   <bean id="sleep" class="sub.ent.api.ImporterStepSleep" />
   <bean id="convert" class="sub.adw.ImporterStepConvert" />
+  <bean id="upload" class="sub.ent.api.ImporterStepUpload" />
 
   <bean id="importer" class="sub.ent.backend.Importer">
     <property name="steps">
       <list>
         <ref local="sleep" />
         <ref local="convert" />
+        <ref local="upload" />
       </list>
     </property>
   </bean>
