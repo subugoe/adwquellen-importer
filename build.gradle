@@ -1,0 +1,15 @@
+
+group = 'sub.adw'
+version = '0.0.1-SNAPSHOT'
+
+allprojects {
+	repositories {
+		mavenCentral()
+		maven {
+			url 'https://repo.boundlessgeo.com/main/'
+		}
+	}
+	apply plugin: 'java'
+
+	defaultTasks "clean", "build"
+}
