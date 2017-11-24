@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+
+  <bean id="sleep" class="sub.ent.api.ImporterStepSleep" />
+  <bean id="convert" class="sub.adw.ImporterStepConvert" />
+
+  <bean id="importer" class="sub.ent.backend.Importer">
+    <property name="steps">
+      <list>
+        <ref local="sleep" />
+        <ref local="convert" />
+      </list>
+    </property>
+  </bean>
+
+  <bean id="config" class="sub.ent.config.ConfigStrings">
+    <property name="description" value="Importer für ADW-Quellen" />
+    <property name="projectName" value="ADW-Quellen" />
+  </bean>
+
+</beans>
