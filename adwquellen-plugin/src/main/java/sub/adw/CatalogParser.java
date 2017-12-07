@@ -4,25 +4,26 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
 
 import org.xml.sax.SAXException;
 
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.ListMultimap;
+
 public class CatalogParser {
 
-	public List<Map<String, String>> convertCatalogEntriesToMaps(List<Map<String, String>> excelEntries)
+	public List<ListMultimap<String, String>> convertCatalogEntriesToMaps(List<ListMultimap<String, String>> excelEntries)
 			throws MalformedURLException, IOException, SAXException, ParserConfigurationException,
 			XPathExpressionException {
-		List<Map<String, String>> allMaps = new ArrayList<>();
+		List<ListMultimap<String, String>> allMaps = new ArrayList<>();
 		CatalogPpnResolver resolver = new CatalogPpnResolver();
-		for (Map<String, String> excelEntry : excelEntries) {
-			Map<String, String> modsMap = new HashMap<>();
-			String[] ppnArray = excelEntry.get("ppn").split("[;\\s]+");
+		for (ListMultimap<String, String> excelEntry : excelEntries) {
+			ListMultimap<String, String> modsMap = ArrayListMultimap.create();
+			String[] ppnArray = excelEntry.get("ppn").get(0).split("[;\\s]+");
 			for (String ppn : ppnArray) {
 				if ("".equals(ppn)) {
 					// TODO: warning

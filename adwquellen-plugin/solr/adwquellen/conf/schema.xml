@@ -53,6 +53,7 @@
   <field name="ppn" type="text_de" multiValued="false "/>
   <field name="biblio" type="text_de" multiValued="false "/>
   <field name="artikel" type="text_de" multiValued="false" />
+  <field name="name" type="text_de" />
 
   <!-- transaction log -->
   <field name="_version_" type="long" indexed="true" stored="true" />

@@ -13,6 +13,10 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.ListMultimap;
+import com.google.common.collect.Multimap;
+
 public class FwbExcelParser {
 
 	private String[] headers = { "A 0 sort", "B 1 sigle", "C 2 kraftliste", "D 3 kurztitel", "E 4 ort und zeit", "F 5",
@@ -31,15 +35,15 @@ public class FwbExcelParser {
 	private final int ZITIERWEISE = 19;
 	private final int NAME = 21;
 
-	public List<Map<String, String>> convertExcelToMaps(File excelFile) throws IOException {
+	public List<ListMultimap<String, String>> convertExcelToMaps(File excelFile) throws IOException {
 		FileInputStream file = new FileInputStream(excelFile);
-		List<Map<String, String>> resultList = new ArrayList<>();
+		List<ListMultimap<String, String>> resultList = new ArrayList<>();
 		XSSFWorkbook workbook = new XSSFWorkbook(file);
 
 		XSSFSheet sheet = workbook.getSheetAt(0);
 
 		for (int i = 1; i <= sheet.getLastRowNum(); i++) {
-			Map<String, String> resultMap = new HashMap<>();
+			ListMultimap<String, String> resultMap = ArrayListMultimap.create();
 
 			resultMap.put("origin", "fwb");
 

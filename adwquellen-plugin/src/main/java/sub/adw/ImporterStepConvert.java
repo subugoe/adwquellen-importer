@@ -6,6 +6,8 @@ import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 
+import com.google.common.collect.ListMultimap;
+
 import sub.ent.api.ImporterStep;
 import sub.ent.backend.FileAccess;
 
@@ -26,12 +28,12 @@ public class ImporterStepConvert extends ImporterStep {
 
 		fileAccess.cleanDir(outputDir);
 		out.println("    Converting Excel.");
-		List<Map<String, String>> entries = excelParser.convertExcelToMaps(inputExcel);
+		List<ListMultimap<String, String>> entries = excelParser.convertExcelToMaps(inputExcel);
 		out.println("    Converting catalog entries:");
-		List<Map<String, String>> catalogEntries = catalogParser.convertCatalogEntriesToMaps(entries);
+		List<ListMultimap<String, String>> catalogEntries = catalogParser.convertCatalogEntriesToMaps(entries);
 		entries.addAll(catalogEntries);
 		int i = 0;
-		for (Map<String, String> mapEntry : entries) {
+		for (ListMultimap<String, String> mapEntry : entries) {
 			i++;
 			mapEntry.put("id", "" + i);
 			String solrXmlString = mapConverter.convertToSolrXml(mapEntry);

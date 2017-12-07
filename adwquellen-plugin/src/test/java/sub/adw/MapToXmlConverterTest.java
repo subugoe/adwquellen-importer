@@ -10,6 +10,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.ListMultimap;
+
 public class MapToXmlConverterTest {
 
 	@Before
@@ -28,8 +31,8 @@ public class MapToXmlConverterTest {
 		assertXpathEvaluatesTo("1234", "//field[@name='ppn']", solrXml);
 	}
 
-	private Map<String, String> mapEntries() {
-		Map<String, String> map = new HashMap<>();
+	private ListMultimap<String, String> mapEntries() {
+		ListMultimap<String, String> map = ArrayListMultimap.create();
 		map.put("ppn", "1234");
 		map.put("titel", "testTitle");
 		return map;

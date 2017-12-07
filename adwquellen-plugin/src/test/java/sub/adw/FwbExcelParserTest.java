@@ -10,6 +10,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.google.common.collect.ListMultimap;
+
 public class FwbExcelParserTest {
 
 	@Before
@@ -23,11 +25,11 @@ public class FwbExcelParserTest {
 	@Test
 	public void test() throws Exception {
 		FwbExcelParser excelParser = new FwbExcelParser();
-		List<Map<String, String>> results = excelParser.convertExcelToMaps(new File("src/test/resources/sources.xlsx"));
+		List<ListMultimap<String, String>> results = excelParser.convertExcelToMaps(new File("src/test/resources/sources.xlsx"));
 
-		assertEquals("Biblio1", results.get(0).get("biblio"));
-		assertEquals("145520943", results.get(0).get("ppn"));
-		assertEquals("022714251", results.get(1).get("ppn"));
+		assertEquals("Biblio1", results.get(0).get("biblio").get(0));
+		assertEquals("145520943", results.get(0).get("ppn").get(0));
+		assertEquals("022714251", results.get(1).get("ppn").get(0));
 	}
 
 }

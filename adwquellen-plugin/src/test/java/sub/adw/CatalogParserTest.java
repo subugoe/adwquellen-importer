@@ -13,6 +13,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.ListMultimap;
+
 public class CatalogParserTest {
 
 	CatalogParser parser = new CatalogParser();
@@ -27,11 +30,11 @@ public class CatalogParserTest {
 
 	@Test
 	public void shouldParseEntryWithThreePpns() throws Exception {
-		List<Map<String, String>> maps = parser.convertCatalogEntriesToMaps(excelEntryWithThreePpns());
+		List<ListMultimap<String, String>> maps = parser.convertCatalogEntriesToMaps(excelEntryWithThreePpns());
 		assertEquals(3, maps.size());
-		String title1 = maps.get(0).get("titel");
-		String title2 = maps.get(1).get("titel");
-		String title3 = maps.get(2).get("titel");
+		String title1 = maps.get(0).get("titel").get(0);
+		String title2 = maps.get(1).get("titel").get(0);
+		String title3 = maps.get(2).get("titel").get(0);
 		assertEquals("Gedichte Heinrichs des Teichners", title1);
 		assertEquals("Gedichte Heinrichs des Teichners", title2);
 		assertEquals("Gedichte Heinrichs des Teichners", title3);
@@ -39,25 +42,25 @@ public class CatalogParserTest {
 
 	@Test
 	public void shouldParseTwoEntries() throws Exception {
-		List<Map<String, String>> maps = parser.convertCatalogEntriesToMaps(excelEntries());
-		String title1 = maps.get(0).get("titel");
-		String title2 = maps.get(1).get("titel");
+		List<ListMultimap<String, String>> maps = parser.convertCatalogEntriesToMaps(excelEntries());
+		String title1 = maps.get(0).get("titel").get(0);
+		String title2 = maps.get(1).get("titel").get(0);
 		assertEquals("Friedrich von Schwaben", title1);
 		assertEquals("Kirchen- und religiöse Lieder aus dem zwölften bis fünfzehnten Jahrhundert", title2);
 	}
 
-	private List<Map<String, String>> excelEntryWithThreePpns() {
-		List<Map<String, String>> entries = new ArrayList<>();
-		Map<String, String> map1 = new HashMap<>();
+	private List<ListMultimap<String, String>> excelEntryWithThreePpns() {
+		List<ListMultimap<String, String>> entries = new ArrayList<>();
+		ListMultimap<String, String> map1 = ArrayListMultimap.create();
 		map1.put("ppn", "176825541; 17682555X; 176825568");
 		entries.add(map1);
 		return entries;
 	}
 
-	private List<Map<String, String>> excelEntries() {
-		List<Map<String, String>> entries = new ArrayList<>();
-		Map<String, String> map1 = new HashMap<>();
-		Map<String, String> map2 = new HashMap<>();
+	private List<ListMultimap<String, String>> excelEntries() {
+		List<ListMultimap<String, String>> entries = new ArrayList<>();
+		ListMultimap<String, String> map1 = ArrayListMultimap.create();
+		ListMultimap<String, String> map2 = ArrayListMultimap.create();
 		map1.put("ppn", "145520943");
 		map2.put("ppn", "022714251");
 		entries.add(map1);
