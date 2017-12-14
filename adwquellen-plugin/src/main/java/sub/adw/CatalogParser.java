@@ -35,6 +35,10 @@ public class CatalogParser {
 					Xpath xpath = new Xpath(mods);
 					modsMap.put("origin", "catalog");
 					modsMap.put("titel", xpath.getString("//titleInfo/title"));
+					List<String> names = xpath.getList("/mods/name");
+					for (String name : names) {
+						modsMap.put("name", dewhitespace(name));
+					}
 					modsMap.put("ppn", ppn);
 					allMaps.add(modsMap);
 				} catch (FileNotFoundException e) {
@@ -49,5 +53,9 @@ public class CatalogParser {
 			}
 		}
 		return allMaps;
+	}
+
+	private String dewhitespace(String str) {
+		return str.replaceAll("\\s+", " ").trim();
 	}
 }

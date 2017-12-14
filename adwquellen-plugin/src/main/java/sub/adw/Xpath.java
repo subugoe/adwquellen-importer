@@ -1,6 +1,8 @@
 package sub.adw;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -13,6 +15,7 @@ import javax.xml.xpath.XPathFactory;
 
 import org.apache.commons.io.IOUtils;
 import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 public class Xpath {
@@ -32,5 +35,15 @@ public class Xpath {
 		XPathExpression expr = xpath.compile(xpathExpression);
 		String result = (String) expr.evaluate(doc, XPathConstants.STRING);
 		return result;
+	}
+
+	public List<String> getList(String xpathExpression) throws XPathExpressionException {
+		XPathExpression expr = xpath.compile(xpathExpression);
+		NodeList resultNodes = (NodeList) expr.evaluate(doc, XPathConstants.NODESET);
+		List<String> resultList = new ArrayList<>();
+		for (int i = 0; i < resultNodes.getLength(); i++) {
+			resultList.add(resultNodes.item(i).getTextContent());
+		}
+		return resultList;
 	}
 }
