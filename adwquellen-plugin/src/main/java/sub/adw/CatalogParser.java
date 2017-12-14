@@ -22,7 +22,6 @@ public class CatalogParser {
 		List<ListMultimap<String, String>> allMaps = new ArrayList<>();
 		CatalogPpnResolver resolver = new CatalogPpnResolver();
 		for (ListMultimap<String, String> excelEntry : excelEntries) {
-			ListMultimap<String, String> modsMap = ArrayListMultimap.create();
 			String[] ppnArray = excelEntry.get("ppn").get(0).split("[;\\s]+");
 			for (String ppn : ppnArray) {
 				if ("".equals(ppn)) {
@@ -31,6 +30,7 @@ public class CatalogParser {
 				}
 				//System.out.println(ppn);
 				try {
+					ListMultimap<String, String> modsMap = ArrayListMultimap.create();
 					String mods = resolver.fetchByPpn(ppn, CatalogPpnResolver.MODS_FORMAT);
 					Xpath xpath = new Xpath(mods);
 					modsMap.put("origin", "catalog");
