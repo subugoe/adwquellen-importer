@@ -35,9 +35,9 @@ public class CatalogParserTest {
 		String title1 = maps.get(0).get("titel").get(0);
 		String title2 = maps.get(1).get("titel").get(0);
 		String title3 = maps.get(2).get("titel").get(0);
-		assertEquals("Gedichte Heinrichs des Teichners", title1);
-		assertEquals("Gedichte Heinrichs des Teichners", title2);
-		assertEquals("Gedichte Heinrichs des Teichners", title3);
+		assertEquals("Die Gedichte Heinrichs des Teichners", title1);
+		assertEquals("Die Gedichte Heinrichs des Teichners", title2);
+		assertEquals("Die Gedichte Heinrichs des Teichners", title3);
 	}
 
 	@Test

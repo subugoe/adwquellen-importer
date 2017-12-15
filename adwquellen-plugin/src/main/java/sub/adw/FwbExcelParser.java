@@ -48,6 +48,8 @@ public class FwbExcelParser {
 			resultMap.put("origin", "fwb");
 
 			Row row = sheet.getRow(i);
+			String sigle = asString(row.getCell(SIGLE));
+			resultMap.put("sigle", sigle);
 			String biblio = asString(row.getCell(BIBLIO));
 			resultMap.put("biblio", biblio);
 			String title = asString(row.getCell(KURZTITEL_KLARSCHRIFT));

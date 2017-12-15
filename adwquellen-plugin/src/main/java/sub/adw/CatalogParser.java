@@ -34,10 +34,15 @@ public class CatalogParser {
 					String mods = resolver.fetchByPpn(ppn, CatalogPpnResolver.MODS_FORMAT);
 					Xpath xpath = new Xpath(mods);
 					modsMap.put("origin", "catalog");
-					modsMap.put("titel", xpath.getString("//titleInfo/title"));
+					List<String> titleParts = xpath.getList("/mods/titleInfo[not(@type='alternative')]/*[self::nonSort or self::title]");
+					String title = "";
+					for (String titlePart : titleParts) {
+						title += titlePart;
+					}
+					modsMap.put("titel", title);
 					List<String> names = xpath.getList("/mods/name");
 					for (String name : names) {
-						modsMap.put("name", dewhitespace(name));
+						modsMap.put("name", normalizeWhitespace(name));
 					}
 					modsMap.put("ppn", ppn);
 					allMaps.add(modsMap);
@@ -55,7 +60,7 @@ public class CatalogParser {
 		return allMaps;
 	}
 
-	private String dewhitespace(String str) {
+	private String normalizeWhitespace(String str) {
 		return str.replaceAll("\\s+", " ").trim();
 	}
 }
