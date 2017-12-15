@@ -16,11 +16,12 @@ import com.google.common.collect.ListMultimap;
 
 public class CatalogParser {
 
-	public List<ListMultimap<String, String>> convertCatalogEntriesToMaps(List<ListMultimap<String, String>> excelEntries)
-			throws MalformedURLException, IOException, SAXException, ParserConfigurationException,
-			XPathExpressionException {
+	private CatalogPpnResolver resolver = new CatalogPpnResolver();
+
+	public List<ListMultimap<String, String>> convertCatalogEntriesToMaps(
+			List<ListMultimap<String, String>> excelEntries) throws MalformedURLException, IOException, SAXException,
+					ParserConfigurationException, XPathExpressionException {
 		List<ListMultimap<String, String>> allMaps = new ArrayList<>();
-		CatalogPpnResolver resolver = new CatalogPpnResolver();
 		for (ListMultimap<String, String> excelEntry : excelEntries) {
 			String[] ppnArray = excelEntry.get("ppn").get(0).split("[;\\s]+");
 			for (String ppn : ppnArray) {
@@ -28,24 +29,9 @@ public class CatalogParser {
 					// TODO: warning
 					continue;
 				}
-				//System.out.println(ppn);
+				// System.out.println(ppn);
 				try {
-					ListMultimap<String, String> modsMap = ArrayListMultimap.create();
-					String mods = resolver.fetchByPpn(ppn, CatalogPpnResolver.MODS_FORMAT);
-					Xpath xpath = new Xpath(mods);
-					modsMap.put("origin", "catalog");
-					List<String> titleParts = xpath.getList("/mods/titleInfo[not(@type='alternative')]/*[self::nonSort or self::title]");
-					String title = "";
-					for (String titlePart : titleParts) {
-						title += titlePart;
-					}
-					modsMap.put("titel", title);
-					List<String> names = xpath.getList("/mods/name");
-					for (String name : names) {
-						modsMap.put("name", normalizeWhitespace(name));
-					}
-					modsMap.put("ppn", ppn);
-					allMaps.add(modsMap);
+					allMaps.add(toMap(ppn));
 				} catch (FileNotFoundException e) {
 					System.out.println("Not found in catalog: " + e.getMessage());
 				} catch (IOException e) {
@@ -60,7 +46,33 @@ public class CatalogParser {
 		return allMaps;
 	}
 
+	public ListMultimap<String, String> toMap(String ppn) throws XPathExpressionException, MalformedURLException,
+			IOException, SAXException, ParserConfigurationException {
+		ListMultimap<String, String> modsMap = ArrayListMultimap.create();
+		String mods = resolver.fetchByPpn(ppn, CatalogPpnResolver.MODS_FORMAT);
+		Xpath xpath = new Xpath(mods);
+		modsMap.put("origin", "catalog");
+		List<String> titleParts = xpath
+				.getList("/mods/titleInfo[not(@type='alternative')]/*[self::nonSort or self::title]");
+		String title = "";
+		for (String titlePart : titleParts) {
+			title += titlePart;
+		}
+		modsMap.put("titel", title);
+		List<String> names = xpath.getList("/mods/name");
+		for (String name : names) {
+			modsMap.put("name", normalizeWhitespace(name));
+		}
+		modsMap.put("ppn", ppn);
+		return modsMap;
+	}
+
 	private String normalizeWhitespace(String str) {
 		return str.replaceAll("\\s+", " ").trim();
+	}
+
+	// for unit tests
+	void setPpnResolver(CatalogPpnResolver newResolver) {
+		resolver = newResolver;
 	}
 }
