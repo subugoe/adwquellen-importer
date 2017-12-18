@@ -1,14 +1,14 @@
 package sub.adw;
 
-import static org.junit.Assert.*;
+import static org.custommonkey.xmlunit.XMLAssert.assertXpathEvaluatesTo;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.io.File;
-import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
@@ -17,7 +17,6 @@ import org.junit.Test;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
-import static org.mockito.Mockito.*;
 
 public class CatalogParserTest {
 
@@ -34,9 +33,23 @@ public class CatalogParserTest {
 	}
 
 	@Test
-	public void should() throws Exception {
-		String xml = convert("test.xml");
-		System.out.println(xml);
+	public void shouldAddAlternativeTitle() throws Exception {
+		String solrXml = convert("titleWithAlternative.xml");
+		assertXpathEvaluatesTo("alternative title", "//field[@name='alternativtitel']", solrXml);
+	}
+
+	@Test
+	public void shouldAddSubTitle() throws Exception {
+		String solrXml = convert("titleWithSubTitle.xml");
+		assertXpathEvaluatesTo("Gedichte", "//field[@name='titel']", solrXml);
+		assertXpathEvaluatesTo(" : subtitel", "//field[@name='titelzusatz']", solrXml);
+	}
+
+	@Test
+	public void shouldAddNonSortToTitle() throws Exception {
+		String solrXml = convert("titleWithNonSort.xml");
+		assertXpathEvaluatesTo("catalog", "//field[@name='origin']", solrXml);
+		assertXpathEvaluatesTo("Die Gedichte", "//field[@name='titel']", solrXml);
 	}
 
 	private String convert(String fileName) throws Exception {

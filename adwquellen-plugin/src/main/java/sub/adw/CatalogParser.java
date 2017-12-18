@@ -52,19 +52,31 @@ public class CatalogParser {
 		String mods = resolver.fetchByPpn(ppn, CatalogPpnResolver.MODS_FORMAT);
 		Xpath xpath = new Xpath(mods);
 		modsMap.put("origin", "catalog");
-		List<String> titleParts = xpath
-				.getList("/mods/titleInfo[not(@type='alternative')]/*[self::nonSort or self::title]");
-		String title = "";
-		for (String titlePart : titleParts) {
-			title += titlePart;
-		}
+		
+		String title = mergeParts(xpath, "/mods/titleInfo[not(@type='alternative')]/*[self::nonSort or self::title]");
 		modsMap.put("titel", title);
+		
+		String titleAppendix = mergeParts(xpath, "/mods/titleInfo[not(@type='alternative')]/*[self::subTitle or self::partNumber or self::partName]");
+		modsMap.put("titelzusatz", titleAppendix);
+		
+		modsMap.put("alternativtitel", xpath.getString("/mods/titleInfo[@type='alternative']/title"));
+		
 		List<String> names = xpath.getList("/mods/name");
 		for (String name : names) {
 			modsMap.put("name", normalizeWhitespace(name));
 		}
+		
 		modsMap.put("ppn", ppn);
 		return modsMap;
+	}
+
+	private String mergeParts(Xpath xpath, String path) throws XPathExpressionException {
+		List<String> parts = xpath.getList(path);
+		String whole = "";
+		for (String part : parts) {
+			whole += part;
+		}
+		return whole;
 	}
 
 	private String normalizeWhitespace(String str) {

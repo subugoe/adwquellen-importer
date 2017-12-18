@@ -13,7 +13,9 @@ public class MapToXmlConverter {
 
 		for (String key : fieldMap.keySet()) {
 			for (String value : fieldMap.get(key)) {
-				xml.append("<field name=\"" + key + "\"><![CDATA[" + value + "]]></field>\n");
+				if (!"".equals(value)) {
+					xml.append("<field name=\"" + key + "\"><![CDATA[" + value + "]]></field>\n");
+				}
 			}
 		}
 		xml.append("</doc></add>");
