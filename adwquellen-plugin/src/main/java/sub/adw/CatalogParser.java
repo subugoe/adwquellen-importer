@@ -14,6 +14,8 @@ import org.xml.sax.SAXException;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 
+import static sub.adw.SolrFieldMappings.*;
+
 public class CatalogParser {
 
 	private CatalogPpnResolver resolver = new CatalogPpnResolver();
@@ -51,22 +53,22 @@ public class CatalogParser {
 		ListMultimap<String, String> modsMap = ArrayListMultimap.create();
 		String mods = resolver.fetchByPpn(ppn, CatalogPpnResolver.MODS_FORMAT);
 		Xpath xpath = new Xpath(mods);
-		modsMap.put("origin", "catalog");
+		modsMap.put(ORIGIN, "catalog");
 		
 		String title = mergeParts(xpath, "/mods/titleInfo[not(@type='alternative')]/*[self::nonSort or self::title]");
-		modsMap.put("titel", title);
+		modsMap.put(TITLE, title);
 		
 		String titleAppendix = mergeParts(xpath, "/mods/titleInfo[not(@type='alternative')]/*[self::subTitle or self::partNumber or self::partName]");
-		modsMap.put("titelzusatz", titleAppendix);
+		modsMap.put(TITLE_APPENDIX, titleAppendix);
 		
-		modsMap.put("alternativtitel", xpath.getString("/mods/titleInfo[@type='alternative']/title"));
+		modsMap.put(ALTERNATIVE_TITLE, xpath.getString("/mods/titleInfo[@type='alternative']/title"));
 		
 		List<String> names = xpath.getList("/mods/name");
 		for (String name : names) {
-			modsMap.put("name", normalizeWhitespace(name));
+			modsMap.put(NAME, normalizeWhitespace(name));
 		}
 		
-		modsMap.put("ppn", ppn);
+		modsMap.put(PPN, ppn);
 		return modsMap;
 	}
 

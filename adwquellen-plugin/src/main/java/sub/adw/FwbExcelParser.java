@@ -15,7 +15,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
-import com.google.common.collect.Multimap;
+import static sub.adw.SolrFieldMappings.*;
 
 public class FwbExcelParser {
 
@@ -25,15 +25,15 @@ public class FwbExcelParser {
 			"T 19 zitierweise", "U 20 textsorte", "V 21 name", "W 22 sinnwelt", "X 23 klassifikation",
 			"Y 24 kommunikationsintention" };
 
-	private final int SIGLE = 1;
+	private final int SIGLE_EXCEL = 1;
 	private final int KRAFTLISTE = 2;
 	private final int KURZTITEL_KLARSCHRIFT = 5;
 	private final int DIGITALISAT_ONLINE = 14;
 	private final int PERMALINK = 16;
-	private final int BIBLIO = 17;
-	private final int PPN = 18;
+	private final int BIBLIO_EXCEL = 17;
+	private final int PPN_EXCEL = 18;
 	private final int ZITIERWEISE = 19;
-	private final int NAME = 21;
+	private final int NAME_EXCEL = 21;
 
 	public List<ListMultimap<String, String>> convertExcelToMaps(File excelFile) throws IOException {
 		FileInputStream file = new FileInputStream(excelFile);
@@ -45,18 +45,18 @@ public class FwbExcelParser {
 		for (int i = 1; i <= sheet.getLastRowNum(); i++) {
 			ListMultimap<String, String> resultMap = ArrayListMultimap.create();
 
-			resultMap.put("origin", "fwb");
+			resultMap.put(ORIGIN, "fwb");
 
 			Row row = sheet.getRow(i);
-			String sigle = asString(row.getCell(SIGLE));
-			resultMap.put("sigle", sigle);
-			String biblio = asString(row.getCell(BIBLIO));
-			resultMap.put("biblio", biblio);
+			String sigle = asString(row.getCell(SIGLE_EXCEL));
+			resultMap.put(SIGLE, sigle);
+			String biblio = asString(row.getCell(BIBLIO_EXCEL));
+			resultMap.put(BIBLIO, biblio);
 			String title = asString(row.getCell(KURZTITEL_KLARSCHRIFT));
-			resultMap.put("titel", title);
+			resultMap.put(TITLE, title);
 
-			String ppn = asString(row.getCell(PPN));
-			resultMap.put("ppn", ppn);
+			String ppn = asString(row.getCell(PPN_EXCEL));
+			resultMap.put(PPN, ppn);
 
 			resultList.add(resultMap);
 		}
