@@ -4,9 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -55,8 +53,13 @@ public class FwbExcelParser {
 			String title = asString(row.getCell(KURZTITEL_KLARSCHRIFT));
 			resultMap.put(TITLE, title);
 
-			String ppn = asString(row.getCell(PPN_EXCEL));
-			resultMap.put(PPN, ppn);
+			String ppns = asString(row.getCell(PPN_EXCEL));
+			String[] ppnArray = ppns.split("[;\\s]+");
+			for (String ppn : ppnArray) {
+				if (ppn.matches("[0-9A-Z]+")) {
+					resultMap.put(PPN, ppn);
+				}
+			}
 
 			resultList.add(resultMap);
 		}

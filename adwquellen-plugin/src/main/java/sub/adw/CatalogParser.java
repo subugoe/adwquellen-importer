@@ -25,8 +25,8 @@ public class CatalogParser {
 					ParserConfigurationException, XPathExpressionException {
 		List<ListMultimap<String, String>> allMaps = new ArrayList<>();
 		for (ListMultimap<String, String> excelEntry : excelEntries) {
-			String[] ppnArray = excelEntry.get("ppn").get(0).split("[;\\s]+");
-			for (String ppn : ppnArray) {
+			List<String> ppnList = excelEntry.get("ppn");
+			for (String ppn : ppnList) {
 				if ("".equals(ppn)) {
 					// TODO: warning
 					continue;
