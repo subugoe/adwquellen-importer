@@ -54,26 +54,36 @@ public class CatalogParser {
 		String mods = resolver.fetchByPpn(ppn, CatalogPpnResolver.MODS_FORMAT);
 		Xpath xpath = new Xpath(mods);
 		modsMap.put(ORIGIN, "catalog");
-		
+
 		String title = mergeParts(xpath, "/mods/titleInfo[not(@type='alternative')]/*[self::nonSort or self::title]");
 		modsMap.put(TITLE, title);
-		
-		String titleAppendix = mergeParts(xpath, "/mods/titleInfo[not(@type='alternative')]/*[self::subTitle or self::partNumber or self::partName]");
+
+		String titleAppendix = mergeParts(xpath,
+				"/mods/titleInfo[not(@type='alternative')]/*[self::subTitle or self::partNumber or self::partName]");
 		modsMap.put(TITLE_APPENDIX, titleAppendix);
-		
+
 		modsMap.put(ALTERNATIVE_TITLE, xpath.getString("/mods/titleInfo[@type='alternative']/title"));
-		
+
 		List<String> names = xpath.getList("/mods/name");
 		for (String name : names) {
 			modsMap.put(NAME, normalizeWhitespace(name));
 		}
-		
+
 		modsMap.put(PPN, ppn);
-		
+
 		modsMap.put(PLACE, xpath.getString("/mods/originInfo/place/placeTerm"));
 		modsMap.put(PUBLISHER, xpath.getString("/mods/originInfo/publisher"));
 		modsMap.put(DATE_ISSUED, xpath.getString("/mods/originInfo/dateIssued"));
-		
+
+		List<String> langs = xpath.getList("/mods/language/languageTerm");
+		for (String lang : langs) {
+			modsMap.put(LANGUAGE, lang);
+		}
+
+		modsMap.put(FORM, xpath.getString("/mods/physicalDescription/form"));
+		modsMap.put(EXTENT, xpath.getString("/mods/physicalDescription/extent"));
+		modsMap.put(NOTE, xpath.getString("/mods/note"));
+
 		return modsMap;
 	}
 

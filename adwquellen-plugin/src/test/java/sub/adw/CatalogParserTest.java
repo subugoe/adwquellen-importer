@@ -33,6 +33,26 @@ public class CatalogParserTest {
 	}
 
 	@Test
+	public void shouldAddNote() throws Exception {
+		String solrXml = convert("note.xml");
+		assertXpathEvaluatesTo("my note", "//field[@name='notiz']", solrXml);
+	}
+
+	@Test
+	public void shouldAddPhysicalDescriptions() throws Exception {
+		String solrXml = convert("physicalDescription.xml");
+		assertXpathEvaluatesTo("print", "//field[@name='format']", solrXml);
+		assertXpathEvaluatesTo("1000 S.", "//field[@name='umfang']", solrXml);
+	}
+
+	@Test
+	public void shouldAddLanguages() throws Exception {
+		String solrXml = convert("language.xml");
+		assertXpathEvaluatesTo("fre", "//field[@name='sprache'][1]", solrXml);
+		assertXpathEvaluatesTo("ger", "//field[@name='sprache'][2]", solrXml);
+	}
+
+	@Test
 	public void shouldAddOriginInfos() throws Exception {
 		String solrXml = convert("originInfo.xml");
 		assertXpathEvaluatesTo("Berlin", "//field[@name='ort']", solrXml);

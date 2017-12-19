@@ -13,5 +13,9 @@ public class SolrFieldMappings {
 	public static final String PLACE = "ort";
 	public static final String PUBLISHER = "herausgeber";
 	public static final String DATE_ISSUED = "erscheinungsdatum";
+	public static final String LANGUAGE = "sprache";
+	public static final String FORM = "format";
+	public static final String EXTENT = "umfang";
+	public static final String NOTE = "notiz";
 
 }
