@@ -14,6 +14,6 @@ public class CatalogPpnResolver {
 
 	public String fetchByPpn(String ppn, String format) throws MalformedURLException, IOException {
 		String url = URL_TEMPLATE.replace("__PPN__", ppn).replace("__FORMAT__", format);
-		return IOUtils.toString(new URL(url).openStream());
+		return IOUtils.toString(new URL(url).openStream(), "UTF-8");
 	}
 }

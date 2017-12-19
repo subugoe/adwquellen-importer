@@ -60,19 +60,6 @@ public class CatalogParserTest {
 	}
 
 	@Test
-	public void shouldParseEntryWithThreePpns() throws Exception {
-		parser.setPpnResolver(new CatalogPpnResolver());
-		List<ListMultimap<String, String>> maps = parser.convertCatalogEntriesToMaps(excelEntryWithThreePpns());
-		assertEquals(3, maps.size());
-		String title1 = maps.get(0).get("titel").get(0);
-		String title2 = maps.get(1).get("titel").get(0);
-		String title3 = maps.get(2).get("titel").get(0);
-		assertEquals("Die Gedichte Heinrichs des Teichners", title1);
-		assertEquals("Die Gedichte Heinrichs des Teichners", title2);
-		assertEquals("Die Gedichte Heinrichs des Teichners", title3);
-	}
-
-	@Test
 	public void shouldParseTwoEntries() throws Exception {
 		parser.setPpnResolver(new CatalogPpnResolver());
 		List<ListMultimap<String, String>> maps = parser.convertCatalogEntriesToMaps(excelEntries());
@@ -80,14 +67,6 @@ public class CatalogParserTest {
 		String title2 = maps.get(1).get("titel").get(0);
 		assertEquals("Friedrich von Schwaben", title1);
 		assertEquals("Kirchen- und religiöse Lieder aus dem zwölften bis fünfzehnten Jahrhundert", title2);
-	}
-
-	private List<ListMultimap<String, String>> excelEntryWithThreePpns() {
-		List<ListMultimap<String, String>> entries = new ArrayList<>();
-		ListMultimap<String, String> map1 = ArrayListMultimap.create();
-		map1.put("ppn", "176825541; 17682555X; 176825568");
-		entries.add(map1);
-		return entries;
 	}
 
 	private List<ListMultimap<String, String>> excelEntries() {
