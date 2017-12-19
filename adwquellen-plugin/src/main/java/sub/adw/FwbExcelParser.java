@@ -5,6 +5,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -26,6 +28,9 @@ public class FwbExcelParser {
 	private final int SIGLE_EXCEL = 1;
 	private final int KRAFTLISTE = 2;
 	private final int KURZTITEL_KLARSCHRIFT = 5;
+	private final int RAUM_ORT = 6;
+	private final int RAUM_KARTE = 7;
+	private final int GROSSRAUM = 8;
 	private final int DIGITALISAT_ONLINE = 14;
 	private final int PERMALINK = 16;
 	private final int BIBLIO_EXCEL = 17;
@@ -50,8 +55,8 @@ public class FwbExcelParser {
 			resultMap.put(SIGLE, sigle);
 			String biblio = asString(row.getCell(BIBLIO_EXCEL));
 			resultMap.put(BIBLIO, biblio);
-			String title = asString(row.getCell(KURZTITEL_KLARSCHRIFT));
-			resultMap.put(TITLE, title);
+			String shortTitle = asString(row.getCell(KURZTITEL_KLARSCHRIFT));
+			resultMap.put(SHORT_TITLE, shortTitle);
 
 			String ppns = asString(row.getCell(PPN_EXCEL));
 			String[] ppnArray = ppns.split("[;\\s]+");
@@ -60,6 +65,17 @@ public class FwbExcelParser {
 					resultMap.put(PPN, ppn);
 				}
 			}
+
+			appendFromPowerList(row, resultMap);
+
+			String area_place = asString(row.getCell(RAUM_ORT));
+			resultMap.put(AREA_PLACE, area_place);
+
+			String area_map = asString(row.getCell(RAUM_KARTE));
+			resultMap.put(AREA_MAP, area_map);
+
+			String wide_area = asString(row.getCell(GROSSRAUM));
+			resultMap.put(WIDE_AREA, wide_area);
 
 			resultList.add(resultMap);
 		}
@@ -88,6 +104,39 @@ public class FwbExcelParser {
 			return true;
 		}
 		return false;
+	}
+
+	private void appendFromPowerList(Row row, ListMultimap<String, String> resultMap) {
+		String entryKind = asString(row.getCell(NAME_EXCEL));
+		String fieldName = "";
+		if ("1".equals(entryKind)) {
+			fieldName = AUTHOR;
+		} else if ("2".equals(entryKind)) {
+			fieldName = AUTHOR_SECONDARY;
+		} else if ("3".equals(entryKind)) {
+			fieldName = PUBLISHER;
+		} else if ("4".equals(entryKind)) {
+			fieldName = TITLE;
+		} else {
+			return;
+		}
+		String powerList = asString(row.getCell(KRAFTLISTE));
+		String entryValue = extractUsingRegex("\\$c(.*?)#", powerList).get(0);
+		resultMap.put(fieldName, entryValue);
+	}
+
+	private List<String> extractUsingRegex(String regex, String s) {
+		List<String> results = new ArrayList<String>();
+		Pattern pattern = Pattern.compile(regex);
+		Matcher matcher = pattern.matcher(s);
+		while (matcher.find()) {
+			results.add(matcher.group(1));
+		}
+
+		if (results.isEmpty()) {
+			results.add("");
+		}
+		return results;
 	}
 
 }

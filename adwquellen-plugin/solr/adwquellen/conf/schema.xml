@@ -66,6 +66,15 @@
   <!-- from fwb -->
   <field name="sigle" type="text_de" multiValued="false"/>
   <field name="biblio" type="text_de" multiValued="false"/>
+  <!-- titel -->
+  <!-- ppn -->
+  <!-- herausgeber -->
+  <field name="kurztitel" type="text_de" multiValued="false"/>
+  <field name="author" type="text_de" multiValued="false"/>
+  <field name="author_sekundaer" type="text_de" multiValued="false"/>
+  <field name="raum_ort" type="text_de" multiValued="false"/>
+  <field name="raum_karte" type="text_de" multiValued="false"/>
+  <field name="grossraum" type="text_de" multiValued="false"/>
 
   <!-- transaction log -->
   <field name="_version_" type="long" indexed="true" stored="true" />

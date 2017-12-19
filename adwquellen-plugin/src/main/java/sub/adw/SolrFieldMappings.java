@@ -18,4 +18,10 @@ public class SolrFieldMappings {
 	public static final String EXTENT = "umfang";
 	public static final String NOTE = "notiz";
 
+	public static final String AUTHOR = "author";
+	public static final String AUTHOR_SECONDARY = "author_sekundaer";
+	public static final String SHORT_TITLE = "kurztitel";
+	public static final String AREA_PLACE = "raum_ort";
+	public static final String AREA_MAP = "raum_karte";
+	public static final String WIDE_AREA = "grossraum";
 }
