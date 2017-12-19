@@ -33,6 +33,14 @@ public class CatalogParserTest {
 	}
 
 	@Test
+	public void shouldAddOriginInfos() throws Exception {
+		String solrXml = convert("originInfo.xml");
+		assertXpathEvaluatesTo("Berlin", "//field[@name='ort']", solrXml);
+		assertXpathEvaluatesTo("my publisher", "//field[@name='herausgeber']", solrXml);
+		assertXpathEvaluatesTo("1956", "//field[@name='erscheinungsdatum']", solrXml);
+	}
+
+	@Test
 	public void shouldAddAlternativeTitle() throws Exception {
 		String solrXml = convert("titleWithAlternative.xml");
 		assertXpathEvaluatesTo("alternative title", "//field[@name='alternativtitel']", solrXml);

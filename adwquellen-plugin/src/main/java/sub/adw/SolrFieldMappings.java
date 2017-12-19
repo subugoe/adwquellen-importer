@@ -10,5 +10,8 @@ public class SolrFieldMappings {
 	public static final String NAME = "name";
 	public static final String SIGLE = "sigle";
 	public static final String BIBLIO = "biblio";
+	public static final String PLACE = "ort";
+	public static final String PUBLISHER = "herausgeber";
+	public static final String DATE_ISSUED = "erscheinungsdatum";
 
 }

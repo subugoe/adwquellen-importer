@@ -57,6 +57,9 @@
   <field name="biblio" type="text_de" multiValued="false"/>
   <field name="artikel" type="text_de" multiValued="false" />
   <field name="name" type="text_de" />
+  <field name="ort" type="text_de" multiValued="false" />
+  <field name="herausgeber" type="text_de" multiValued="false" />
+  <field name="erscheinungsdatum" type="text_de" multiValued="false" />
 
   <!-- transaction log -->
   <field name="_version_" type="long" indexed="true" stored="true" />

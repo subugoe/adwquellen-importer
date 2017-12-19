@@ -69,6 +69,11 @@ public class CatalogParser {
 		}
 		
 		modsMap.put(PPN, ppn);
+		
+		modsMap.put(PLACE, xpath.getString("/mods/originInfo/place/placeTerm"));
+		modsMap.put(PUBLISHER, xpath.getString("/mods/originInfo/publisher"));
+		modsMap.put(DATE_ISSUED, xpath.getString("/mods/originInfo/dateIssued"));
+		
 		return modsMap;
 	}
 
