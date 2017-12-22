@@ -3,7 +3,7 @@
   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
 
   <bean id="sleep" class="sub.ent.api.ImporterStepSleep" />
-  <bean id="convert" class="sub.adw.ImporterStepConvert" />
+  <bean id="convert" class="sub.adw.api.ImporterStepConvert" />
   <bean id="upload" class="sub.ent.api.ImporterStepUpload" />
 
   <bean id="importer" class="sub.ent.backend.Importer">
