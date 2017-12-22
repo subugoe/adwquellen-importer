@@ -3,6 +3,7 @@ package sub.adw;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -37,6 +38,12 @@ public class FwbExcelParser {
 	private final int PPN_EXCEL = 18;
 	private final int ZITIERWEISE = 19;
 	private final int NAME_EXCEL = 21;
+
+	private PrintStream out = System.out;
+
+	public void setOut(PrintStream newOut) {
+		out = newOut;
+	}
 
 	public List<ListMultimap<String, String>> convertExcelToMaps(File excelFile) throws IOException {
 		FileInputStream file = new FileInputStream(excelFile);
@@ -78,8 +85,12 @@ public class FwbExcelParser {
 			resultMap.put(WIDE_AREA, wide_area);
 
 			resultList.add(resultMap);
+			if (i % 2000 == 0) {
+				out.println("    ... " + i);
+			}
 		}
 		workbook.close();
+		out.println("    ... " + resultList.size());
 		return resultList;
 	}
 

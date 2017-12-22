@@ -30,12 +30,15 @@ public class ImporterStepConvert extends ImporterStep {
 		File inputExcel = new File(inputDir, "FWB-Quellenliste.xlsx");
 
 		fileAccess.cleanDir(outputDir);
-		out.println("    Converting Excel.");
+		out.println("    Processing FWB Excel entries:");
+		excelParser.setOut(out);
 		List<ListMultimap<String, String>> entries = excelParser.convertExcelToMaps(inputExcel);
-		out.println("    Converting catalog entries:");
+		out.println("    Processing catalog entries:");
+		catalogParser.setOut(out);
 		List<ListMultimap<String, String>> catalogEntries = catalogParser.convertCatalogEntriesToMaps(entries);
 		entries.addAll(catalogEntries);
 		int i = 0;
+		out.println("    Converting all entries:");
 		for (ListMultimap<String, String> mapEntry : entries) {
 			i++;
 			mapEntry.put("id", "" + i);
@@ -47,7 +50,7 @@ public class ImporterStepConvert extends ImporterStep {
 	}
 
 	private void printCurrentStatus(int currentNumber, int lastNumber) {
-		if (currentNumber % 10000 == 0 || currentNumber == lastNumber) {
+		if (currentNumber % 2000 == 0 || currentNumber == lastNumber) {
 			out.println("    ... " + currentNumber);
 		}
 	}

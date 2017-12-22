@@ -2,6 +2,7 @@ package sub.adw;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,11 +20,13 @@ import static sub.adw.SolrFieldMappings.*;
 public class CatalogParser {
 
 	private CatalogPpnResolver resolver = new CatalogPpnResolver();
+	private PrintStream out = System.out;
 
 	public List<ListMultimap<String, String>> convertCatalogEntriesToMaps(
 			List<ListMultimap<String, String>> excelEntries) throws MalformedURLException, IOException, SAXException,
 					ParserConfigurationException, XPathExpressionException {
 		List<ListMultimap<String, String>> allMaps = new ArrayList<>();
+		int i = 0;
 		for (ListMultimap<String, String> excelEntry : excelEntries) {
 			List<String> ppnList = excelEntry.get("ppn");
 			for (String ppn : ppnList) {
@@ -34,17 +37,22 @@ public class CatalogParser {
 				// System.out.println(ppn);
 				try {
 					allMaps.add(toMap(ppn));
+					i++;
+					if (i % 2000 == 0) {
+						out.println("    ... " + i);
+					}
 				} catch (FileNotFoundException e) {
-					System.out.println("Not found in catalog: " + e.getMessage());
+					out.println("WARNING: Not found in catalog: " + e.getMessage());
 				} catch (IOException e) {
 					if (e.getMessage().startsWith("Server returned HTTP response code: 400")) {
-						System.out.println(e.getMessage());
+						out.println("WARNING: " + e.getMessage());
 					} else {
 						throw e;
 					}
 				}
 			}
 		}
+		out.println("    ... " + i);
 		return allMaps;
 	}
 
@@ -98,6 +106,10 @@ public class CatalogParser {
 
 	private String normalizeWhitespace(String str) {
 		return str.replaceAll("\\s+", " ").trim();
+	}
+
+	public void setOut(PrintStream newOut) {
+		out = newOut;
 	}
 
 	// for unit tests
