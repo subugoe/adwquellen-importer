@@ -24,7 +24,7 @@ services:
       - ./gitclone/git:/git
       - ./import-files:/import-files
     environment:
-      - GIT_DIR=/git/adwquellen-daten
+      - GIT_INPUT_DIR=/git/adwquellen-daten
       - OUTPUT_DIR=/import-files
       - SOLR_IMPORT_CORE=adwquellen
       - SOLR_ONLINE_CORE=

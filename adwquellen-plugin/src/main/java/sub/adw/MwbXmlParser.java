@@ -39,6 +39,7 @@ public class MwbXmlParser {
 			addPpns(catalogEntry, resultMap);
 			resultList.add(resultMap);
 		}
+		out.println("    ... " + resultList.size());
 		return resultList;
 	}
 

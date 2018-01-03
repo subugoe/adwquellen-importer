@@ -11,6 +11,7 @@ import com.google.common.collect.ListMultimap;
 import sub.adw.CatalogParser;
 import sub.adw.FwbExcelParser;
 import sub.adw.MapToXmlConverter;
+import sub.adw.MwbXmlParser;
 import sub.ent.api.ImporterStep;
 import sub.ent.backend.FileAccess;
 
@@ -18,6 +19,7 @@ public class ImporterStepConvert extends ImporterStep {
 
 	private FileAccess fileAccess = new FileAccess();
 	private FwbExcelParser excelParser = new FwbExcelParser();
+	private MwbXmlParser mwbParser = new MwbXmlParser();
 	private CatalogParser catalogParser = new CatalogParser();
 	private MapToXmlConverter mapConverter = new MapToXmlConverter();
 
@@ -33,6 +35,13 @@ public class ImporterStepConvert extends ImporterStep {
 		out.println("    Processing FWB Excel entries:");
 		excelParser.setOut(out);
 		List<ListMultimap<String, String>> entries = excelParser.convertExcelToMaps(inputExcel);
+
+		File mwbFile = new File(inputDir, "MWB-PPN.xml");
+		out.println("    Processing MWB XML entries:");
+		mwbParser.setOut(out);
+		List<ListMultimap<String, String>> mwbEntries = mwbParser.convertXmlToMaps(mwbFile);
+		entries.addAll(mwbEntries);
+
 		out.println("    Processing catalog entries:");
 		catalogParser.setOut(out);
 		List<ListMultimap<String, String>> catalogEntries = catalogParser.convertCatalogEntriesToMaps(entries);

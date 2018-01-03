@@ -23,7 +23,6 @@ public class MwbXmlParserTest {
 	@Test
 	public void shouldAddNoPpns() throws Exception {
 		String solrXml = convert("ppnsEmpty.xml");
-		System.out.println(solrXml);
 		assertXpathEvaluatesTo("", "//field[@name='ppn']", solrXml);
 	}
 
