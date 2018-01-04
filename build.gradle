@@ -23,3 +23,9 @@ allprojects {
 		testCompile group: 'org.mockito', name: 'mockito-core', version: '2.13.0'
 	}
 }
+
+project(':solr-importer:web') {
+	dependencies {
+		runtime project(':adwquellen-plugin')
+	}
+}
