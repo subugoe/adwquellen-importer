@@ -61,6 +61,7 @@ public class CatalogParser {
 		ListMultimap<String, String> modsMap = ArrayListMultimap.create();
 		String mods = resolver.fetchByPpn(ppn, CatalogPpnResolver.MODS_FORMAT);
 		Xpath xpath = new Xpath(mods);
+
 		modsMap.put(ORIGIN, "catalog");
 
 		String title = mergeParts(xpath, "/mods/titleInfo[not(@type='alternative')]/*[self::nonSort or self::title]");
@@ -91,6 +92,12 @@ public class CatalogParser {
 		modsMap.put(FORM, xpath.getString("/mods/physicalDescription/form"));
 		modsMap.put(EXTENT, xpath.getString("/mods/physicalDescription/extent"));
 		modsMap.put(NOTE, xpath.getString("/mods/note"));
+
+		String picaText = resolver.fetchByPpn(ppn, CatalogPpnResolver.PICA_FORMAT);
+		Pica picaReader = new Pica();
+		picaReader.init(picaText);
+
+		modsMap.put(IS_PARENT, picaReader.isParent());
 
 		return modsMap;
 	}

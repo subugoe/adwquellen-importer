@@ -62,6 +62,8 @@
   <field name="format" type="text_de" multiValued="false" />
   <field name="umfang" type="text_de" multiValued="false" />
   <field name="notiz" type="text_de" multiValued="false" />
+  <!-- from catalog (pica) -->
+  <field name="is_parent" type="boolean" />
 
   <!-- from fwb -->
   <field name="sigle" type="text_de" multiValued="false"/>

@@ -31,6 +31,7 @@ public class CatalogPpnResolverTest {
 	public void shouldFetchPica() throws Exception {
 		String pica = resolver.fetchByPpn("145520943", CatalogPpnResolver.PICA_FORMAT);
 		assertThat(pica, containsString("002@ $0Aau"));
+		System.out.println(pica);
 	}
 
 	@Test
