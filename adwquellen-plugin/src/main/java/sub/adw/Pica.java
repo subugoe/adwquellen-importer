@@ -20,6 +20,21 @@ public class Pica {
 		}
 	}
 
+	public String getCreationMethod() {
+		String s = extractUsingRegex("002@ \\$0..(.)", picaEntry);
+		if ("u".equals(s)) {
+			return "autopsy";
+		} else if ("n".equals(s)) {
+			return "converted";
+		} else if ("x".equals(s)) {
+			return "from_other_db";
+		} else if ("r".equals(s)) {
+			return "retrospective";
+		} else {
+			return "unknown";
+		}
+	}
+
 	private String extractUsingRegex(String regex, String s) {
 		String result = "";
 		Pattern pattern = Pattern.compile(regex);

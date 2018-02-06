@@ -98,6 +98,7 @@ public class CatalogParser {
 		picaReader.init(picaText);
 
 		modsMap.put(IS_PARENT, picaReader.isParent());
+		modsMap.put(CREATION_METHOD, picaReader.getCreationMethod());
 
 		return modsMap;
 	}

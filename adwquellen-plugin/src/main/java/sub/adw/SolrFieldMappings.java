@@ -26,4 +26,5 @@ public class SolrFieldMappings {
 	public static final String WIDE_AREA = "grossraum";
 
 	public static final String IS_PARENT = "is_parent";
+	public static final String CREATION_METHOD = "creation_method";
 }
