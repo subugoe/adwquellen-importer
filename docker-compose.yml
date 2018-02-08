@@ -1,18 +1,29 @@
 version: '2'
+
 services:
+
+  solr:
+    image: solr:5.4.1
+    restart: always
+    volumes:
+      - ./solr:/opt/solr/server/solr
+    ports:
+      - 8984:8983
+
   compile:
     build:
       context: .
       dockerfile: Dockerfile-compile
     volumes:
       - .:/project
-  solr:
-    image: solr:5.4.1
-    restart: always
+
+  gitclone:
+    build: gitclone
     volumes:
-      - ./adwquellen-plugin/solr:/opt/solr/server/solr
-    ports:
-      - 8984:8983
+      - ./gitclone/git:/git
+    env_file:
+      - docker.env
+
   importer:
     build:
       context: .

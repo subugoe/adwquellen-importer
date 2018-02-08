@@ -1,5 +1,5 @@
-FROM maven:3.5
+FROM gradle:4.4
 
 WORKDIR /project
 
-CMD mvn clean package -Dmaven.repo.local=/project/.m2
+CMD gradle --gradle-user-home /project/.gradle-user-home
