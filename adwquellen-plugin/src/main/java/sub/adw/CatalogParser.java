@@ -5,7 +5,9 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
@@ -21,6 +23,7 @@ public class CatalogParser {
 
 	private CatalogPpnResolver resolver = new CatalogPpnResolver();
 	private PrintStream out = System.out;
+	private Set<String> searchedPpns = new HashSet<>();
 
 	public List<ListMultimap<String, String>> convertCatalogEntriesToMaps(
 			List<ListMultimap<String, String>> excelEntries) throws MalformedURLException, IOException, SAXException,
@@ -32,6 +35,9 @@ public class CatalogParser {
 			for (String ppn : ppnList) {
 				if ("".equals(ppn)) {
 					// TODO: warning
+					continue;
+				}
+				if (alreadySearchedInCatalog(ppn)) {
 					continue;
 				}
 				// System.out.println(ppn);
@@ -54,6 +60,15 @@ public class CatalogParser {
 		}
 		out.println("    ... " + i);
 		return allMaps;
+	}
+
+	private boolean alreadySearchedInCatalog(String ppn) {
+		if (searchedPpns.contains(ppn)) {
+			return true;
+		} else {
+			searchedPpns.add(ppn);
+			return false;
+		}
 	}
 
 	public ListMultimap<String, String> toMap(String ppn) throws XPathExpressionException, MalformedURLException,
