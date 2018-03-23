@@ -67,7 +67,7 @@
   <field name="parent_ppn" type="string" />
 
   <!-- from fwb -->
-  <field name="sigle" type="text_de" multiValued="false"/>
+  <field name="sigle" type="text_de" />
   <field name="biblio" type="text_de" multiValued="false"/>
   <!-- titel -->
   <!-- ppn -->
