@@ -68,7 +68,7 @@ public class FwbExcelParser {
 			String ppns = asString(row.getCell(PPN_EXCEL));
 			String[] ppnArray = ppns.split("[;\\s]+");
 			for (String ppn : ppnArray) {
-				if (ppn.matches("[0-9A-Z]+")) {
+				if (ppn.matches("[0-9A-Z]{7,}")) {
 					resultMap.put(PPN, ppn);
 				}
 			}

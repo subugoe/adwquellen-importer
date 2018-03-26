@@ -25,6 +25,8 @@ public class SolrFieldMappings {
 	public static final String AREA_MAP = "raum_karte";
 	public static final String WIDE_AREA = "grossraum";
 
+	public static final String LINK = "link";
+
 	public static final String CREATION_METHOD = "creation_method";
 	public static final String PARENT_PPN = "parent_ppn";
 }

@@ -1,8 +1,6 @@
 package sub.adw;
 
-import static sub.adw.SolrFieldMappings.BIBLIO;
-import static sub.adw.SolrFieldMappings.ORIGIN;
-import static sub.adw.SolrFieldMappings.SIGLE;
+import static sub.adw.SolrFieldMappings.*;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -22,8 +20,12 @@ import com.google.common.collect.ListMultimap;
 
 public class DwbExcelParser {
 
+	private final int DATE_EXCEL = 0;
 	private final int SIGLE_EXCEL = 1;
 	private final int BIBLIO_EXCEL = 2;
+	private final int PPN_EXCEL = 3;
+	private final int PPN2_EXCEL = 8;
+	private final int LINK_EXCEL = 10;
 
 	private PrintStream out = System.out;
 
@@ -54,6 +56,14 @@ public class DwbExcelParser {
 			String biblio = asString(row.getCell(BIBLIO_EXCEL));
 			resultMap.put(BIBLIO, biblio);
 
+			String date = asString(row.getCell(DATE_EXCEL));
+			resultMap.put(DATE_ISSUED, date);
+
+			addPpns(resultMap, asString(row.getCell(PPN_EXCEL)));
+			addPpns(resultMap, asString(row.getCell(PPN2_EXCEL)));
+
+			addLinks(resultMap, asString(row.getCell(LINK_EXCEL)));
+
 			resultList.add(resultMap);
 			if ((i + 1) % 2000 == 0) {
 				out.println("    ... " + (i + 1));
@@ -62,6 +72,22 @@ public class DwbExcelParser {
 		workbook.close();
 		out.println("    ... " + resultList.size());
 		return resultList;
+	}
+
+	private void addLinks(ListMultimap<String, String> resultMap, String linkCellContent) {
+		String[] potentialLinks = linkCellContent.split("\\s+");
+		for (String potentialLink : potentialLinks) {
+			if (potentialLink.startsWith("http"))
+				resultMap.put(LINK, potentialLink);
+		}
+	}
+
+	private void addPpns(ListMultimap<String, String> resultMap, String ppnCellContent) {
+		String[] potentialPpns = ppnCellContent.split("[:;]\\s*");
+		for (String potentialPpn : potentialPpns) {
+			if (potentialPpn.matches("[0-9A-Z]{7,}"))
+				resultMap.put(PPN, potentialPpn);
+		}
 	}
 
 	private String asString(Cell cell) {

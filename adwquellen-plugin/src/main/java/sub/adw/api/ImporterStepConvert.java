@@ -9,6 +9,7 @@ import org.apache.commons.io.FileUtils;
 import com.google.common.collect.ListMultimap;
 
 import sub.adw.CatalogParser;
+import sub.adw.DwbExcelParser;
 import sub.adw.FwbExcelParser;
 import sub.adw.MapToXmlConverter;
 import sub.adw.MwbXmlParser;
@@ -20,6 +21,7 @@ public class ImporterStepConvert extends ImporterStep {
 	private FileAccess fileAccess = new FileAccess();
 	private FwbExcelParser excelParser = new FwbExcelParser();
 	private MwbXmlParser mwbParser = new MwbXmlParser();
+	private DwbExcelParser dwbParser = new DwbExcelParser();
 	private CatalogParser catalogParser = new CatalogParser();
 	private MapToXmlConverter mapConverter = new MapToXmlConverter();
 
@@ -42,6 +44,12 @@ public class ImporterStepConvert extends ImporterStep {
 		List<ListMultimap<String, String>> mwbEntries = mwbParser.convertXmlToMaps(mwbFile);
 		entries.addAll(mwbEntries);
 
+		File dwbFile = new File(inputDir, "ADW_Zieldatei.xls");
+		out.println("    Processing DWB Excel entries:");
+		dwbParser.setOut(out);
+		List<ListMultimap<String, String>> dwbEntries = dwbParser.convertExcelToMaps(dwbFile);
+		entries.addAll(dwbEntries);
+		
 		out.println("    Processing catalog entries:");
 		catalogParser.setOut(out);
 		List<ListMultimap<String, String>> catalogEntries = catalogParser.convertCatalogEntriesToMaps(entries);
