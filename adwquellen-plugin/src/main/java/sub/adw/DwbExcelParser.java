@@ -37,6 +37,7 @@ public class DwbExcelParser {
 		FileInputStream file = new FileInputStream(excelFile);
 		List<ListMultimap<String, String>> resultList = new ArrayList<>();
 		HSSFWorkbook workbook = new HSSFWorkbook(file);
+		YearFromToParser yearParser = new YearFromToParser();
 
 		HSSFSheet sheet = workbook.getSheetAt(0);
 
@@ -57,7 +58,9 @@ public class DwbExcelParser {
 			resultMap.put(BIBLIO, biblio);
 
 			String date = asString(row.getCell(DATE_EXCEL));
-			resultMap.put(DATE_ISSUED, date);
+			ParsedDateRange dates = yearParser.parse(date);
+			resultMap.put(DATE_ISSUED_FROM, dates.from);
+			resultMap.put(DATE_ISSUED_TO, dates.to);
 
 			addPpns(resultMap, asString(row.getCell(PPN_EXCEL)));
 			addPpns(resultMap, asString(row.getCell(PPN2_EXCEL)));

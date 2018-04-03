@@ -21,7 +21,9 @@ public class DwbExcelParserTest {
 		assertXpathEvaluatesTo("34.0", "//field[@name='sigle'][1]", xml);
 		assertXpathEvaluatesTo("67.0", "//field[@name='sigle'][2]", xml);
 		assertXpathEvaluatesTo("biblio1", "//field[@name='biblio']", xml);
-		assertXpathEvaluatesTo("....", "//field[@name='erscheinungsdatum']", xml);
+		assertXpathEvaluatesTo("", "//field[@name='erscheinungsdatum']", xml);
+		assertXpathEvaluatesTo("", "//field[@name='erscheinungsdatum_von']", xml);
+		assertXpathEvaluatesTo("", "//field[@name='erscheinungsdatum_bis']", xml);
 		assertXpathEvaluatesTo("130291390", "//field[@name='ppn'][1]", xml);
 		assertXpathEvaluatesTo("167790676", "//field[@name='ppn'][3]", xml);
 		assertXpathEvaluatesTo("http://books.google.de/book1", "//field[@name='link'][1]", xml);
@@ -37,7 +39,9 @@ public class DwbExcelParserTest {
 		File excel = new File("src/test/resources/dwb.xls");
 		String xml = converter.convertToSolrXml(parser.convertExcelToMaps(excel).get(1));
 		
-		assertXpathEvaluatesTo("1777", "//field[@name='erscheinungsdatum']", xml);
+		assertXpathEvaluatesTo("", "//field[@name='erscheinungsdatum']", xml);
+		assertXpathEvaluatesTo("1777", "//field[@name='erscheinungsdatum_von']", xml);
+		assertXpathEvaluatesTo("1777", "//field[@name='erscheinungsdatum_bis']", xml);
 		assertXpathEvaluatesTo("140590544", "//field[@name='ppn']", xml);
 		
 	}
