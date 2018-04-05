@@ -1,25 +1,33 @@
 package sub.adw;
 
+import java.util.HashSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class YearFromToParser {
 
-	private String[] splitWrittenDates;
+	private HashSet<String> set = new HashSet<>();
 
 	public ParsedDateRange parse(String writtenDate) {
 		if (writtenDate == null || writtenDate.isEmpty()) {
 			return new ParsedDateRange("", "");
 		}
 
-		splitWrittenDates = writtenDate.split("\\.\\s*");
+		writtenDate = stripParentheses(writtenDate);
 
-		if (splitWrittenDates.length == 1 && splitWrittenDates[0].matches("[0-9]{3,4}")) {
-			return new ParsedDateRange(splitWrittenDates[0], splitWrittenDates[0]);
+		// 1777
+		// 1777.
+		String regex = "([0-9]{3,4})\\.?";
+		if (writtenDate.matches(regex)) {
+			String year = extract(regex, writtenDate);
+			return new ParsedDateRange(year, year);
 		}
 
-		if (entry(0, "1") && entry(1, "h") && entry(3, "jh")) {
-			int century = Integer.parseInt(splitWrittenDates[2]);
+		// 1.h.15. Jh.
+		// 1.h15.jh.
+		regex = "1\\.h\\.?([0-9]{2})\\.[^?]*";
+		if (writtenDate.matches(regex)) {
+			int century = Integer.parseInt(extract(regex, writtenDate));
 			return centuryRange(century, 1, 50);
 		}
 
@@ -28,8 +36,11 @@ public class YearFromToParser {
 			return yearRange(year, -20, 20);
 		}
 
-		if (writtenDate.matches("v[0-9]{3,4}")) {
-			int year = Integer.parseInt(deleteFirstChar(writtenDate));
+		// v1234
+		// v 1234
+		regex = "v\\s?([0-9]{3,4})";
+		if (writtenDate.matches("v\\s?([0-9]{3,4})")) {
+			int year = Integer.parseInt(extract(regex, writtenDate));
 			return yearRange(year, -50, 0);
 		}
 
@@ -38,8 +49,9 @@ public class YearFromToParser {
 			return yearRange(year, 0, 50);
 		}
 
-		if (writtenDate.matches("A[0-9]{2}\\..*")) {
-			int century = Integer.parseInt(writtenDate.substring(1, 3));
+		regex = "A([0-9]{1,2})\\..*";
+		if (writtenDate.matches(regex)) {
+			int century = Integer.parseInt(extract(regex, writtenDate));
 			return centuryRange(century, 1, 33);
 		}
 
@@ -58,12 +70,48 @@ public class YearFromToParser {
 			return centuryRange(century, 33, 100);
 		}
 
-		System.out.println(writtenDate);
+		printIfUnknownYet(writtenDate);
+
 		return new ParsedDateRange("", "");
 	}
 
+	private void printIfUnknownYet(String writtenDate) {
+		addToSet("....", "...", "___", "____", "hs./dr.___", "z.j.____", "z.j. ....");
+		
+		String regexForSet = "";
+		if (writtenDate.matches("-[0-9]{3,4}")) {
+			regexForSet = "-[0-9]{3,4}";
+			addToSet(regexForSet);
+		}
+		// 1508/16
+		if (writtenDate.matches("[0-9]{4}/[0-9]{1,2}")) {
+			regexForSet = "[0-9]{4}/[0-9]{1,2}";
+			addToSet(regexForSet);
+		}
+		// 14.jh.
+		if (writtenDate.matches("[0-9]{2}\\.jh\\.")) {
+			regexForSet = "[0-9]{2}\\.jh\\.";
+			addToSet(regexForSet);
+		}
+		if (!set.contains(writtenDate) && !set.contains(regexForSet))
+			System.out.println(writtenDate);
+	}
+
+	private void addToSet(String... strings) {
+		for (String s : strings) {
+			set.add(s);
+		}
+	}
+
+	private String stripParentheses(String writtenDate) {
+		if (writtenDate.startsWith("(") && writtenDate.endsWith(")")) {
+			return deleteLastChar(deleteFirstChar(writtenDate));
+		}
+		return writtenDate;
+	}
+
 	private ParsedDateRange centuryRange(int century, int upperRange, int lowerRange) {
-		int year = (century - 1) * 100; 
+		int year = (century - 1) * 100;
 		return yearRange(year, upperRange, lowerRange);
 	}
 
@@ -73,15 +121,12 @@ public class YearFromToParser {
 		return new ParsedDateRange("" + fromYear, "" + toYear);
 	}
 
-	private boolean entry(int arrayIndex, String s) {
-		if (splitWrittenDates.length < arrayIndex + 1) {
-			return false;
-		}
-		return splitWrittenDates[arrayIndex].trim().toLowerCase().equals(s);
-	}
-
 	private String deleteFirstChar(String s) {
 		return s.substring(1);
+	}
+
+	private String deleteLastChar(String s) {
+		return s.substring(0, s.length() - 1);
 	}
 
 	private String extract(String regex, String s) {
