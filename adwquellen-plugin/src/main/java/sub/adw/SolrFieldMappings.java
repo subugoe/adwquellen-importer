@@ -31,4 +31,6 @@ public class SolrFieldMappings {
 
 	public static final String CREATION_METHOD = "creation_method";
 	public static final String PARENT_PPN = "parent_ppn";
+
+	public static final String DICTIONARY = "dictionary";
 }

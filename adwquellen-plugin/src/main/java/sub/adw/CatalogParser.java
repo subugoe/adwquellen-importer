@@ -5,8 +5,10 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -23,11 +25,11 @@ public class CatalogParser {
 
 	private CatalogPpnResolver resolver = new CatalogPpnResolver();
 	private PrintStream out = System.out;
-	private Set<String> searchedPpns = new HashSet<>();
+	private Map<String, ListMultimap<String, String>> searchedPpns = new HashMap<>();
 
 	public List<ListMultimap<String, String>> convertCatalogEntriesToMaps(
-			List<ListMultimap<String, String>> dictionaryEntries) throws MalformedURLException, IOException, SAXException,
-					ParserConfigurationException, XPathExpressionException {
+			List<ListMultimap<String, String>> dictionaryEntries) throws MalformedURLException, IOException,
+			SAXException, ParserConfigurationException, XPathExpressionException {
 		List<ListMultimap<String, String>> allMaps = new ArrayList<>();
 		int i = 0;
 		for (ListMultimap<String, String> dictionaryEntry : dictionaryEntries) {
@@ -37,15 +39,18 @@ public class CatalogParser {
 					// TODO: warning
 					continue;
 				}
-				if (alreadySearchedInCatalog(ppn)) {
-					continue;
-				}
-				// System.out.println(ppn);
 				try {
-					allMaps.add(toMap(ppn));
-					i++;
-					if (i % 2000 == 0) {
-						out.println("    ... " + i);
+					if (notYetSearchedInCatalog(ppn)) {
+						ListMultimap<String, String> map = toMap(ppn);
+						map.put(DICTIONARY, dictionaryEntry.get(ORIGIN).get(0));
+						searchedPpns.put(ppn, map);
+						allMaps.add(map);
+						i++;
+						if (i % 2000 == 0) {
+							out.println("    ... " + i);
+						}
+					} else {
+						searchedPpns.get(ppn).put(DICTIONARY, dictionaryEntry.get(ORIGIN).get(0));
 					}
 				} catch (FileNotFoundException e) {
 					out.println("WARNING: Not found in catalog: " + e.getMessage());
@@ -62,17 +67,12 @@ public class CatalogParser {
 		return allMaps;
 	}
 
-	private boolean alreadySearchedInCatalog(String ppn) {
-		if (searchedPpns.contains(ppn)) {
-			return true;
-		} else {
-			searchedPpns.add(ppn);
-			return false;
-		}
+	private boolean notYetSearchedInCatalog(String ppn) {
+		return searchedPpns.get(ppn) == null;
 	}
 
-	public ListMultimap<String, String> toMap(String ppn) throws XPathExpressionException, MalformedURLException,
-			IOException, SAXException, ParserConfigurationException {
+	ListMultimap<String, String> toMap(String ppn) throws XPathExpressionException, MalformedURLException, IOException,
+			SAXException, ParserConfigurationException {
 		ListMultimap<String, String> modsMap = ArrayListMultimap.create();
 		String mods = resolver.fetchByPpn(ppn, CatalogPpnResolver.MODS_FORMAT);
 		Xpath xpath = new Xpath(mods);

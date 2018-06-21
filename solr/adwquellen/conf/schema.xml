@@ -67,6 +67,9 @@
   <!-- from catalog (pica) -->
   <field name="creation_method" type="string" />
   <field name="parent_ppn" type="string" />
+  
+  <!-- for filtering of catalog entries -->
+  <field name="dictionary" type="string" multiValued="true" />
 
   <!-- from fwb -->
   <field name="sigle" type="text_de" />

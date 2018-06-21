@@ -83,28 +83,62 @@ public class CatalogParserTest {
 	private String convert(String fileName) throws Exception {
 		String mods = FileUtils.readFileToString(new File("src/test/resources/catalog/" + fileName), "UTF-8");
 		when(resolverMock.fetchByPpn(anyString(), anyString())).thenReturn(mods);
-		MapToXmlConverter converter = new MapToXmlConverter();
-		return converter.convertToSolrXml(parser.toMap("dummy-ppn"));
+		return new MapToXmlConverter().convertToSolrXml(parser.toMap("dummy-ppn"));
 	}
 
 	@Test
-	public void shouldParseTwoEntries() throws Exception {
+	public void shouldParseTwoEntries_readingFromRealOnlineCatalog() throws Exception {
 		parser.setPpnResolver(new CatalogPpnResolver());
-		List<ListMultimap<String, String>> maps = parser.convertCatalogEntriesToMaps(excelEntries());
+		List<ListMultimap<String, String>> maps = parser.convertCatalogEntriesToMaps(dictionaryEntries("145520943", "022714251"));
 		String title1 = maps.get(0).get("titel").get(0);
 		String title2 = maps.get(1).get("titel").get(0);
 		assertEquals("Friedrich von Schwaben", title1);
 		assertEquals("Kirchen- und religiöse Lieder aus dem zwölften bis fünfzehnten Jahrhundert", title2);
 	}
+	
+	@Test
+	public void twoDifferentDictionaryPpns_createsTwoMaps() throws Exception {
+		String mods = FileUtils.readFileToString(new File("src/test/resources/catalog/note.xml"), "UTF-8");
+		when(resolverMock.fetchByPpn("0001", CatalogPpnResolver.MODS_FORMAT)).thenReturn(mods);
+		String mods2 = FileUtils.readFileToString(new File("src/test/resources/catalog/originInfo.xml"), "UTF-8");
+		when(resolverMock.fetchByPpn("0002", CatalogPpnResolver.MODS_FORMAT)).thenReturn(mods2);
+		
+		when(resolverMock.fetchByPpn("0001", CatalogPpnResolver.PICA_FORMAT)).thenReturn("");
+		when(resolverMock.fetchByPpn("0002", CatalogPpnResolver.PICA_FORMAT)).thenReturn("");
+		
+		List<ListMultimap<String, String>> maps = parser.convertCatalogEntriesToMaps(dictionaryEntries("0001", "0002"));
+		assertEquals(2, maps.size());
+	}
 
-	private List<ListMultimap<String, String>> excelEntries() {
+	@Test
+	public void twoEqualDictionaryPpns_createsOneMap() throws Exception {
+		String mods = FileUtils.readFileToString(new File("src/test/resources/catalog/note.xml"), "UTF-8");
+		when(resolverMock.fetchByPpn("0001", CatalogPpnResolver.MODS_FORMAT)).thenReturn(mods);
+		
+		when(resolverMock.fetchByPpn("0001", CatalogPpnResolver.PICA_FORMAT)).thenReturn("");
+		
+		
+		List<ListMultimap<String, String>> dictionaryEntries = dictionaryEntries("0001", "0001");
+		dictionaryEntries.get(0).removeAll("origin");
+		dictionaryEntries.get(0).put("origin", "fwb");
+		dictionaryEntries.get(1).removeAll("origin");
+		dictionaryEntries.get(1).put("origin", "dwb");
+		List<ListMultimap<String, String>> maps = parser.convertCatalogEntriesToMaps(dictionaryEntries);
+		assertEquals(1, maps.size());
+		
+		String xml = new MapToXmlConverter().convertToSolrXml(maps.get(0));
+		assertXpathEvaluatesTo("fwb", "//field[@name='dictionary'][1]", xml);
+		assertXpathEvaluatesTo("dwb", "//field[@name='dictionary'][2]", xml);
+	}
+
+	private List<ListMultimap<String, String>> dictionaryEntries(String... ppns) {
 		List<ListMultimap<String, String>> entries = new ArrayList<>();
-		ListMultimap<String, String> map1 = ArrayListMultimap.create();
-		ListMultimap<String, String> map2 = ArrayListMultimap.create();
-		map1.put("ppn", "145520943");
-		map2.put("ppn", "022714251");
-		entries.add(map1);
-		entries.add(map2);
+		for (String ppn : ppns) {
+			ListMultimap<String, String> map = ArrayListMultimap.create();
+			map.put("ppn", ppn);
+			map.put("origin", "fwb");
+			entries.add(map);
+		}
 		return entries;
 	}
 
