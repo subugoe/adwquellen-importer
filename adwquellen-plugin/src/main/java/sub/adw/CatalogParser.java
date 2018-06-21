@@ -26,12 +26,12 @@ public class CatalogParser {
 	private Set<String> searchedPpns = new HashSet<>();
 
 	public List<ListMultimap<String, String>> convertCatalogEntriesToMaps(
-			List<ListMultimap<String, String>> excelEntries) throws MalformedURLException, IOException, SAXException,
+			List<ListMultimap<String, String>> dictionaryEntries) throws MalformedURLException, IOException, SAXException,
 					ParserConfigurationException, XPathExpressionException {
 		List<ListMultimap<String, String>> allMaps = new ArrayList<>();
 		int i = 0;
-		for (ListMultimap<String, String> excelEntry : excelEntries) {
-			List<String> ppnList = excelEntry.get("ppn");
+		for (ListMultimap<String, String> dictionaryEntry : dictionaryEntries) {
+			List<String> ppnList = dictionaryEntry.get("ppn");
 			for (String ppn : ppnList) {
 				if ("".equals(ppn)) {
 					// TODO: warning

@@ -31,9 +31,9 @@ public class ImporterStepConvert extends ImporterStep {
 		String solrXmlDir = params.get("solrXmlDir");
 		File outputDir = new File(solrXmlDir);
 		File inputDir = new File(gitDir);
-		File inputExcel = new File(inputDir, "FWB-Quellenliste.xlsx");
-
 		fileAccess.cleanDir(outputDir);
+
+		File inputExcel = new File(inputDir, "FWB-Quellenliste.xlsx");
 		out.println("    Processing FWB Excel entries:");
 		excelParser.setOut(out);
 		List<ListMultimap<String, String>> entries = excelParser.convertExcelToMaps(inputExcel);
