@@ -87,6 +87,34 @@
   <!-- from dwb -->
   <field name="link" type="text_de" />
   
+  <field name="merged_content" type="text_de" />
+  
+  <copyField source="origin" dest="merged_content" />
+  <copyField source="titel" dest="merged_content" />
+  <copyField source="titelzusatz" dest="merged_content" />
+  <copyField source="alternativtitel" dest="merged_content" />
+  <copyField source="ppn" dest="merged_content" />
+  <copyField source="name" dest="merged_content" />
+  <copyField source="ort" dest="merged_content" />
+  <copyField source="herausgeber" dest="merged_content" />
+  <copyField source="erscheinungsdatum" dest="merged_content" />
+  <copyField source="erscheinungsdatum_von" dest="merged_content" />
+  <copyField source="erscheinungsdatum_bis" dest="merged_content" />
+  <copyField source="sprache" dest="merged_content" />
+  <copyField source="format" dest="merged_content" />
+  <copyField source="umfang" dest="merged_content" />
+  <copyField source="notiz" dest="merged_content" />
+  <copyField source="creation_method" dest="merged_content" />
+  <copyField source="dictionary" dest="merged_content" />
+  <copyField source="sigle" dest="merged_content" />
+  <copyField source="biblio" dest="merged_content" />
+  <copyField source="kurztitel" dest="merged_content" />
+  <copyField source="author" dest="merged_content" />
+  <copyField source="author_sekundaer" dest="merged_content" />
+  <copyField source="raum_ort" dest="merged_content" />
+  <copyField source="raum_karte" dest="merged_content" />
+  <copyField source="grossraum" dest="merged_content" />
+  <copyField source="link" dest="merged_content" />
 
   <!-- transaction log -->
   <field name="_version_" type="long" indexed="true" stored="true" />
