@@ -97,7 +97,9 @@ public class CatalogParser {
 
 		modsMap.put(PLACE, xpath.getString("/mods/originInfo/place/placeTerm"));
 		modsMap.put(PUBLISHER, xpath.getString("/mods/originInfo/publisher"));
-		modsMap.put(DATE_ISSUED_STRING, xpath.getString("/mods/originInfo/dateIssued"));
+		for (String dateIssuedString : xpath.getList("/mods/originInfo/dateIssued")) {
+			modsMap.put(DATE_ISSUED_STRING, dateIssuedString);
+		}
 		for (String dateIssued : xpath.getList("/mods/originInfo/dateIssued")) {
 			if (dateIssued.matches("[0-9]{4}")) {
 				modsMap.put(DATE_ISSUED, dateIssued);
