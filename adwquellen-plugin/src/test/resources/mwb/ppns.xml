@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<MWB-QVZ xmlns="http://www.mhdwb-online.de/quellen">
-  <eintrag uuid="uuid1">
-    <ppns>
-      <ppn>12345678</ppn>
-      <ppn>123456789</ppn>
-    </ppns>
-  </eintrag>
-</MWB-QVZ>
