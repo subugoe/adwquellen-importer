@@ -2,11 +2,6 @@
 <mods xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/mods/v3"
   version="3.4" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-4.xsd">
   <originInfo>
-    <place>
-      <placeTerm type="text">Berlin</placeTerm>
-    </place>
-    <publisher>my publisher</publisher>
-    <dateIssued encoding="marc">1956</dateIssued>
-    <issuance>monographic</issuance>
+    <dateIssued encoding="marc">1222-1223</dateIssued>
   </originInfo>
 </mods>

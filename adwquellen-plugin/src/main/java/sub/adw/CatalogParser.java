@@ -97,7 +97,18 @@ public class CatalogParser {
 
 		modsMap.put(PLACE, xpath.getString("/mods/originInfo/place/placeTerm"));
 		modsMap.put(PUBLISHER, xpath.getString("/mods/originInfo/publisher"));
-		modsMap.put(DATE_ISSUED, xpath.getString("/mods/originInfo/dateIssued"));
+		modsMap.put(DATE_ISSUED_STRING, xpath.getString("/mods/originInfo/dateIssued"));
+		for (String dateIssued : xpath.getList("/mods/originInfo/dateIssued")) {
+			if (dateIssued.matches("[0-9]{4}")) {
+				modsMap.put(DATE_ISSUED, dateIssued);
+			} else if (dateIssued.matches("[0-9]{8}")) {
+				modsMap.put(DATE_ISSUED, dateIssued.substring(0, 4));
+				modsMap.put(DATE_ISSUED, dateIssued.substring(4));
+			} else if (dateIssued.matches("[0-9]{4}-[0-9]{4}")) {
+				modsMap.put(DATE_ISSUED, dateIssued.substring(0, 4));
+				modsMap.put(DATE_ISSUED, dateIssued.substring(5));
+			}
+		}
 
 		List<String> langs = xpath.getList("/mods/language/languageTerm");
 		for (String lang : langs) {

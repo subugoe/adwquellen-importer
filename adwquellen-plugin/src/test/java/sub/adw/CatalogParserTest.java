@@ -61,6 +61,20 @@ public class CatalogParserTest {
 	}
 
 	@Test
+	public void shouldSetTwoDates() throws Exception {
+		String solrXml = convert("dateIssued_long.xml");
+		assertXpathEvaluatesTo("1956", "//field[@name='erscheinungsdatum'][1]", solrXml);
+		assertXpathEvaluatesTo("1222", "//field[@name='erscheinungsdatum'][2]", solrXml);
+	}
+
+	@Test
+	public void shouldSplitDatesOnMinus() throws Exception {
+		String solrXml = convert("dateIssued_withMinus.xml");
+		assertXpathEvaluatesTo("1222", "//field[@name='erscheinungsdatum'][1]", solrXml);
+		assertXpathEvaluatesTo("1223", "//field[@name='erscheinungsdatum'][2]", solrXml);
+	}
+
+	@Test
 	public void shouldAddAlternativeTitle() throws Exception {
 		String solrXml = convert("titleWithAlternative.xml");
 		assertXpathEvaluatesTo("alternative title", "//field[@name='alternativtitel']", solrXml);

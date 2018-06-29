@@ -57,7 +57,8 @@
   <field name="name" type="text_de" />
   <field name="ort" type="text_de" multiValued="false" />
   <field name="herausgeber" type="text_de" multiValued="false" />
-  <field name="erscheinungsdatum" type="text_de" multiValued="false" />
+  <field name="erscheinungsdatum_string" type="text_de" multiValued="false" />
+  <field name="erscheinungsdatum" type="int" multiValued="true" />
   <field name="erscheinungsdatum_von" type="int" />
   <field name="erscheinungsdatum_bis" type="int" />
   <field name="sprache" type="text_de" />
